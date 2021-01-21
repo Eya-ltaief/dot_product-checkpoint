@@ -1,65 +1,94 @@
 // dot product PROCEDURE
-PROCEDURE dot_product(n :INTEGER, v1: ARRAY_OF INTEGER,v2: ARRAY_OF INTEGER)
+PROCEDURE dot_product(v1: ARRAY_OF INTEGER, v2: ARRAY_OF INTEGER, ps :INTEGER)
 VAR
-    i : INTEGER;
-    ps: INTEGER := 0; 
+    i : INTEGER; 
 BEGIN
-    FOR i FROM 0 TO n-1 DO 
+    ps := 0;
+    // entering the vectors
+    FOR i FROM 0 TO v1.length-1 DO 
         Write('donner les elements de vecteur numero 1 :')
         Read(v1[i])
         Write('donner les elements de vecteur numero 2 :')  
         Read(v2[i]) 
     END_FOR
-    FOR i FROM 0 TO n-1 DO 
+    //verfication of sizes of V1 and v2
+    IF (v1.length <> v2.length) THEN
+        Write("vectors with different sizes cannot be calculated");
+        dot := "error";
+    END_IF
+    //calcul de ps
+    FOR i FROM 0 TO v1.length-1 DO 
     ps := ps + (v1[i]*v2[i])
         write(ps)
     END_FOR
+END
+
 // ALGORITHM to verify orthogonal vectors by using the dot product PROCEDURE
-    ALGORITHM orthogonal_vectors
-    VAR
-        n,i : INTEGER;
-        v1: ARRAY_OF INTEGER
-        v2: ARRAY_OF INTEGER
-    BEGIN
-        FOR i FROM 0 TO n-1 DO
-        IF (dot_product(n,v1,v2)==0) THEN
-            write("les vecteurs sont orthogonaux")
-        ELSE
-            write("les vecteurs ne sont pas orthogonaux")
-        END_IF
-    END
+ALGORITHM orthogonal_vectors
+VAR
+    ps,i : INTEGER;
+    v1: ARRAY_OF INTEGER[50];
+    v2: ARRAY_OF INTEGER[50];
+BEGIN
+    //Sizes of elements of V1 and v2
+    n1 := read_size();
+    read_array(n1,v1);
+    n2 := read_size();
+    read_array(n2,v2);
+    // appel de procedure
+    dot_product(v1,v2,ps);
+    // verification de l'orthogonalité
+    IF (ps = 0) THEN
+        write("les vecteurs v1 et v2 sont orthogonaux")
+    ELSE
+        write("les vecteurs v1 et v2 ne sont pas orthogonaux")
+    END_IF
+END
+
 // dot product FUNCTION 
-    FUNCTION dot_product(v1,v2) : INTEGER
-    VAR
-        i,n : INTEGER;
-        ps: INTEGER := 0;
-        v1: ARRAY_OF INTEGER
-        v2: ARRAY_OF INTEGER
-    BEGIN
-        FOR i FROM 0 TO n-1 DO 
+FUNCTION dot_product(v1: ARRAY_OF INTEGER,v2: ARRAY_OF INTEGER) : INTEGER
+VAR
+    i: INTEGER;
+    ps: INTEGER := 0;
+BEGIN
+    // entering the vectors
+    FOR i FROM 0 TO v1.length-1 DO 
         Write('donner les elements de vecteur numero 1 :')
         Read(v1[i])
         Write('donner les elements de vecteur numero 2 :')  
         Read(v2[i]) 
     END_FOR
-    FOR i FROM 0 TO n-1 DO 
+    //verfication of sizes of V1 and v2
+    IF (v1.length <> v2.length) THEN
+        Write("vectors with different sizes cannot be calculated");
+        RETURN ("error");
+    END_IF
+    //calcul de ps
+    FOR i FROM 0 TO v1.length-1 DO 
     ps := ps + (v1[i]*v2[i])
         write(ps)
     END_FOR
         RETURN ps ;
-    END
+END
+
 // ALGORITHM to verify orthogonal vectors by using the dot product FUNCTION 
-    ALGORITHM orthogonal_vectors
-    VAR
-        n,i : INTEGER;
-        v1: ARRAY_OF INTEGER
-        v2: ARRAY_OF INTEGER
-    BEGIN
-        FOR i FROM 0 TO n-1 DO
-        IF (ps = dot_product(v1,v2)==0) THEN
-            write("les vecteurs sont orthogonaux")
-        ELSE
-            write("les vecteurs ne sont pas orthogonaux")
-        END_IF
-    END
+ALGORITHM orthogonal_vectors
+VAR
+    i : INTEGER;
+    v1: ARRAY_OF INTEGER[50]
+    v2: ARRAY_OF INTEGER[50]
+BEGIN
+    //Sizes of elements of V1 and v2
+    n1 := read_size();
+    read_array(n1,v1);
+    n2 := read_size();
+    read_array(n2,v2);
+    // appel de la fonction
+    ps = dot_product(v1,v2);
+    // verification de l'orthogonalité
+    IF (ps = 0) THEN
+        write("les vecteurs sont orthogonaux")
+    ELSE
+        write("les vecteurs ne sont pas orthogonaux")
+    END_IF
 END
